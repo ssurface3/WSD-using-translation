@@ -104,5 +104,5 @@ graph TD
     
     Cluster --> Output[Output: Sense IDs]
   # How to run it: using bash:
-  chmod +x run.sh
+  chmod +x run.sh </br>
   ./run.sh data/my_dataset.tsv
