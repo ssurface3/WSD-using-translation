@@ -1,6 +1,6 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from tqdm import tqdm # Progress bar
+from tqdm import tqdm 
 
 
 # model_name = "facebook/nllb-200-distilled-600M" # or 1.3B or 3.3B

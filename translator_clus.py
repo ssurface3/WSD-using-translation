@@ -48,7 +48,6 @@ class TCluster():
             subset_df['predict_sense_id'] = predictions
             results.append(subset_df)
             
-        # Glue back together
         final_df = pd.concat(results)
         print("\n Done! Results saved.")
         final_df[['predict_sense_id' , 'gold_sense_id' , 'word']].to_csv()

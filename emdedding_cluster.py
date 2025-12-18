@@ -21,14 +21,6 @@ class emd_clust():
         sentences: List of translated English strings
         Returns: Numpy array of embeddings (Vectors)
         """
-        # --- USAGE ---
-        # english_sentences = df['context_en'].tolist()
-        # vectors = extract_embeddings_simple(english_sentences)
-        print("Encoding sentences to vectors...")
-        
-        # 2. Encode
-        # device='cuda' forces it to GPU
-        # show_progress_bar=True gives you the tqdm bar automatically
         embeddings = self.embedding_model.encode(
             sentences, 
             batch_size=32, 
@@ -37,11 +29,11 @@ class emd_clust():
         )
         
         return embeddings
-    def clustering(self, emb):
+    def clustering(self, emb): # worked the best although the easiest
         n_clusters = self.amount_of_clusters(emb)
         kmeans = KMeans(n_clusters=n_clusters)
         return  kmeans.fit_predict(emb)
-    def clustering_powertrans(self, emb):
+    def clustering_powertrans(self, emb):  # power - trnaformation: thought it would better normalize but not 
         pt = PowerTransformer(method='yeo-johnson', standardize=True) 
         
         try:
@@ -51,7 +43,7 @@ class emd_clust():
         n_clusters = self.amount_of_clusters(vectors)
         kmeans = KMeans(n_clusters=n_clusters)
         return  kmeans.fit_predict(emb)
-    def amount_of_clusters(self, emd):
+    def amount_of_clusters(self, emd): 
 
         best_score = -1
         best_k = 2
@@ -60,15 +52,13 @@ class emd_clust():
         for k_candidate in range(2, 4):
             kmeans = KMeans(n_clusters=k_candidate, random_state=42, n_init=10)
             labels = kmeans.fit_predict(emd)
-            
-            # Calculate how "tight" the clusters are
             score = silhouette_score(emd, labels)
             
             if score > best_score:
                 best_score = score
                 best_k = k_candidate
         return best_k
-    def agglomerative_clustering(self, emb): 
+    def agglomerative_clustering(self, emb):  
         """
         Resulted in the worse solution than usual clustering
         The problem might lie in the fact thta if i normailize the data it will be no longer 
@@ -110,7 +100,7 @@ class emd_clust():
         
         labels = model.fit_predict(emb)
         return labels
-    def ARI(self, df,embeddings ,k = 2) -> None:
+    def ARI(self, df,embeddings ,k = 2) -> None: # used to score model at earlier stages
         """
         No automatic clustering right now, made just for checking
         """
